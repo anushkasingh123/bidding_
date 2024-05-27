@@ -9,7 +9,7 @@ const setupWebSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log('New client connected');
+    console.log('New user connected');
 
     socket.on('bid', (data) => {
       io.emit('update', data);

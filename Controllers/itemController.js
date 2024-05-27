@@ -1,6 +1,7 @@
 const itemService = require('../Services/itemService');
 
 const createItem = async (req, res) => {
+  console.log("heeelo",req.user);
   try {
     const result = await itemService.createItem(req);
     return res.send({
@@ -45,9 +46,9 @@ const updateItem = async (req, res) => {
   }
 };
 const deleteItem = async (req, res) => {
-  const { id } = req.params;
+  
   try {
-    const item = await itemService.deleteItem(id);
+    const item = await itemService.deleteItem(req);
     if (!item) {
       res.status(404);
     }

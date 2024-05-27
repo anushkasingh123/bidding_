@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../Utils/db');
-const User = require('./User');
-const Item = require('./Item');
+const {sequelize,connectDB} = require('../Utils/db');
+const User = require('../Models/UserModel');
+const Item = require('../Models/ItemModel');
 
 const Bid = sequelize.define('Bid', {
   id: {
@@ -28,7 +28,7 @@ const Bid = sequelize.define('Bid', {
     allowNull: false
   },
   created_at: {
-    type: timestamps,
+    type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   }
 }, {

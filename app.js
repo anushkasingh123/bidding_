@@ -2,28 +2,37 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
 //const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const { sequelize,connectDB } = require('./Utils/db');
-//const setupWebSocket = require('./Utils/socket');
+const apiLimiter = require('./Utils/rateLimiter')
+const setupWebSocket = require('./Utils/socket');
 
 // Load environment variable
 dotenv.config();
 
 // Middleware
+app.use(morgan('dev'));
+app.use(helmet());
+app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use('/api', apiLimiter);
+
 
 // Routes
 const authRoutes = require('./Routes/authRoutes');
 const itemRoutes = require('./Routes/itemRoutes');
-/*const bidRoutes = require('./routes/bidRoutes');
-const notificationRoutes = require('./routes/notificationRoutes');*/
+const bidRoutes = require('./Routes/bidRoutes');
+const notificationRoutes = require('./Routes/notificationRoutes');
 
-app.use('/users', authRoutes);
-app.use('/items', itemRoutes);
-/*app.use('/items', bidRoutes);
-app.use('/notifications', notificationRoutes);*/
+app.use('/api/users', authRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/bids', bidRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Socket.io Bidding Events
 io.on('connection', (socket) => {
@@ -48,4 +57,4 @@ const server = app.listen(PORT,async () => {
     await sequelize.sync({alter:true});
 });
 
-//setupWebSocket(server);
+setupWebSocket(server);

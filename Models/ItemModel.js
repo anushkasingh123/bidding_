@@ -24,12 +24,11 @@ const Item = sequelize.define('Item', {
     type: DataTypes.DECIMAL,
     defaultValue: 0,
   },
-  /*image_url: {
+  image_url: {
     type: DataTypes.STRING
-  },*/
-  user_id: {
+  },
+  userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     references: {
       model: User,
       key: 'id'
