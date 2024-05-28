@@ -5,7 +5,6 @@ const io = require('socket.io')(http);
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-//const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const { sequelize,connectDB } = require('./Utils/db');
 const apiLimiter = require('./Utils/rateLimiter')
@@ -35,13 +34,13 @@ app.use('/api/bids', bidRoutes);
 app.use('/api/notifications', notificationRoutes);
 
 // Socket.io Bidding Events
-io.on('connection', (socket) => {
+/*io.on('connection', (socket) => {
     console.log('A user connected');
     socket.on('bid', (data) => {
         console.log('Bid placed:', data);
         io.emit('update', data); // Notify all connected clients about a new bid on an item
     });
-});
+});*/
 
 // Error handling middleware
 /*app.use((err, req, res, next) => {
@@ -54,7 +53,7 @@ const PORT = process.env.PORT ;
 const server = app.listen(PORT,async () => {
     console.log(`Server is running on port ${PORT}`);
     await connectDB();
-    await sequelize.sync({alter:true});
+    await sequelize.sync({alter:true, });
 });
 
 setupWebSocket(server);

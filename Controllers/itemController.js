@@ -1,14 +1,18 @@
 const itemService = require('../Services/itemService');
 
 const createItem = async (req, res) => {
-  console.log("heeelo",req.user);
+  //console.log("heeelo",req.user);
   try {
-    const result = await itemService.createItem(req);
-    return res.send({
-      status:200,
-      message:"item added",
-      data:result,
-    })    
+    const result = await itemService.createItem(req,res);
+    if(!result)
+      {
+        res.send({
+          status:200,
+          message:"Hello",
+          data:result,
+        })
+      }
+   
   } catch (error) {
     return res.send({
       status:500,
